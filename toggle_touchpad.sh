@@ -1,4 +1,6 @@
 #!/bin/bash
+# toggles touchpad. Tested on Linux Mint 18.3 on MATE.
+
 #MY_TOUCHPAD_ID = 14
 MY_TOUCHPAD_ID=$(xinput | grep -i "touch" | sed "s/.*id=\([0-9]\+\).*/\1/")
 
