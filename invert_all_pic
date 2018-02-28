@@ -8,6 +8,6 @@ for file in ${DIR:-$PWD}/*; do
   echo -n $file
   if [[ $file == *_invert.$EXT  ]]; 
     then echo -e "\t---Already converted."
-    else convert $file -negate ${file%$EXT}_invert.$EXT; echo ""
+    else convert $file -negate ${file%.$EXT}_invert.$EXT; echo ""
   fi
 done
