@@ -1,0 +1,4 @@
+#!/bin/bash
+# Script uses imagemagick
+EXT=${1##*.}
+convert $1 -negate ${1%EXT}_invert.$EXT 
