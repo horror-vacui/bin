@@ -2,7 +2,11 @@
 # - firefox
 # - thunderbird
 # - anki
+# - KeePassXC
 # - toggle
+#
+# Not the most elegent, because xdotools are invoked twice, 
+# but it has little performance penalty, and it works.
 
 function search_open_firefox {
   xdotool search "Mozilla Firefox" 
@@ -28,6 +32,15 @@ function search_open_thunderbird {
     xdotool search "Thunderbird" windowactivate 
   else
     thunderbird
+  fi  
+}
+
+function search_open_keepass {
+  xdotool search "KeePassXC" 
+  if [ $? -eq 0 ]; then
+    xdotool search "KeePassXC" windowactivate 
+  else
+   keepassxc
   fi  
 }
 
