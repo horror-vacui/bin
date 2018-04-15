@@ -44,3 +44,5 @@ if xsetwacom --list devices | grep -q $TABLET_NAME; then
     fi  
   fi  # display exists
 fi # tablet exists
+
+source m708_button_config.sh
