@@ -1,0 +1,74 @@
+#!/bin/bash
+# Original code by Andrew McDonough
+
+#TODO: 3 (N?) different sizes for every position and it would rotate through them
+# +-20,25 or 30% change --> 3 stages are enough
+# 1. it needs to detect whether it is already at the position 
+# 2. it needs to detect what is the next size based on the current size
+# 3. change the size to the next one
+
+# I've got 2x 1920x1200 monitors
+width=1920
+height=1200
+panel_height=18  # in px
+
+winid=`xdotool getwindowfocus`
+win_pos=`xdotool getwindowgeometry $winid | grep "Position" | sed "s/^[^0-9]*\([0-9]\+,[0-9]\+\) .*$/\1/"`
+pos_x=$(echo $win_pos | cut -d "," -f1)
+pos_y=$(echo $win_pos | cut -d "," -f2)
+
+# echo -e "$winid\n$win_pos\n$pos_x\n$pos_y\n" >> ~/log.txt
+
+if ((pos_x<$width)); then
+  left=0
+else
+  left=$(($width + 1 ))
+fi
+
+case "$1" in
+'')
+  echo "Usage: swind <left|right|top|bottom|top-left|top-right|bottom-left|bottom-right>"
+;;  
+'left')
+  xdotool windowmove $winid $left 0
+  xdotool windowsize $winid $(( $width/2 )) $height
+;;
+'right')
+  xdotool windowmove $winid $(( $left + $width/2))  0
+  xdotool windowsize $winid $(( $width/2)) $height
+;;
+'top')
+  xdotool windowmove $winid $left 0
+  xdotool windowsize $winid $width $(( $height/2 ))
+;;
+'bottom')
+  xdotool windowmove $winid $left $(( $height/2 ))
+  xdotool windowsize $winid $width $(( $height/2 ))
+;;
+'top-left')
+  xdotool windowmove $winid $left 0
+  xdotool windowsize $winid $(( $width/2 )) $(( $height/2))
+;;
+'top-right')
+  xdotool windowmove $winid $(( $left + $width/2))  0
+  xdotool windowsize $winid $(( $width/2 )) $(( $height/2 ))
+;;
+'bottom-left')
+  xdotool windowmove $winid $left $(( $width/2 ))
+  xdotool windowsize $winid $(( $width/2 )) $(( $height/2 ))
+;;
+'bottom-right')
+  xdotool windowmove $winid $(( $left + $width/2))  $(( $height/2 ))
+  xdotool windowsize $winid $(( $width/2 )) $(( $height/2 ))
+;;
+'change-screen')
+  if (( pos_x < $width)); then
+    new_left=$(( $pos_x + $width ))
+  else
+    new_left=$(( $pos_x - $width ))  
+  fi  
+  # echo -e $new_left >> ~/log.txt
+  # I needed these magical numbers, otherwise the windows would move after changing screens...
+  xdotool windowmove $winid $(( $new_left -2 ))  $(($pos_y - 48 ))
+;;  
+esac
