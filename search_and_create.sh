@@ -17,6 +17,16 @@ function search_open_firefox {
   fi  
 }
 
+function search_open_gimp {
+  STR="GNU Image Manipulation Program" 
+  xdotool search $STR
+  if [ $? -eq 0 ]; then
+    xdotool search $STR windowactivate 
+  else
+    gimp
+  fi  
+}
+
 function search_open_anki {
   xdotool search "Anki" 
   if [ $? -eq 0 ]; then
